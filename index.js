@@ -14,7 +14,7 @@ app.use(express.json());
 // CORS configuration
 app.use(
   cors({
-    origin:["http://localhost:5173","http://hacfy.com"], // Frontend URL
+    origin:["http://localhost:5173","https://hacfy.com"], // Frontend URL
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   }),
