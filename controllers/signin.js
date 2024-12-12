@@ -9,8 +9,10 @@ const signIn = async (req,res) => {
     }
 
     try {
-
-        const existingUser = await User.findOne({ email });
+      
+      const existingUser = await User.findOne({ email });
+      const name = existingUser.fullName;
+      const email = existingUser.email;
         if (!existingUser) {
           return res.status(400).json({ message: 'User with this email not exists' });
         }
@@ -21,7 +23,7 @@ const signIn = async (req,res) => {
             return res.status(401).json({message:"incorrect password"});
         }
 
-        return res.status(200).json({message:"login successfull"});
+        return res.status(200).json({message:"login successfull",name,email});
 
     }catch(err) {
         console.log(err)
