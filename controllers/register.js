@@ -1,5 +1,19 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto")
+const nodemailer = require('nodemailer')
+
+
+// const transporter = nodemailer.createTransport({
+//   host :"smpt.hostinger.com",
+//   port:465,
+//   secure:true,
+//   auth: {
+//       user: 'info@hacfy.com', 
+//       pass: 'momz dgnz diha lmpy '   
+//   }
+// });
 
 const signUp = async (req, res) => {
     const { fullName, email, phone, password } = req.body;
@@ -17,21 +31,34 @@ const signUp = async (req, res) => {
       }
   
       // Hash the password before saving it to the database
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      const verificationToken = Math.floor(100000 + Math.random() * 900000).toString()
+
       // Create a new user object
       const user = new User({
         fullName,
         email,
         phone,
         password: hashedPassword,
+        verified:false,
+        verificationToken
       });
   
-      // Save the user to the database
       await user.save();
+
+
+    //   await transporter.sendMail({
+    //     from: 'ashithkumargowda.aiet@gmail.com',
+    //     to: email,
+    //     subject: 'Email Verification',
+    //     html: `<h3>Hello ${fullName},</h3><p>This is your OTP:</p> 
+    //       <p>${verificationToken}</p>`
+    // })
+    
   
-      // Respond with success message
-      res.status(201).json({ message: 'User registered successfully' });
+   
+      res.status(201).json({ message: 'User registered successfully',email });
     } catch (error) {
       console.error('Error registering user:', error);
       res.status(500).json({ message: 'Error registering user', error });
