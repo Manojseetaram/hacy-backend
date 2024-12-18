@@ -36,8 +36,8 @@ const signIn =async (req, res) => {
         
         return res.status(200).json({ 
             token, 
-            message: "Login successful", 
-            name: user.fullName 
+            name: user.fullName ,
+            message: "Login successful"
         });
     } catch (error) {
         console.error("Error during signin:", error);
